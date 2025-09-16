@@ -1,0 +1,29 @@
+
+{
+  "name": "trabalho-final-api-books",
+  "version": "1.4.0",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "start-rest": "node server.js",
+    "start-graphql": "node graphql/server.js",
+    "test": "mocha test/**/*.test.js --timeout 8000",
+    "test-rest-controller": "mocha test/rest/controller/*.test.js --timeout 8000",
+    "test-rest-external": "mocha test/rest/external/*.test.js --timeout 8000",
+    "test-graphql-external": "mocha test/graphql/external/*.test.js --timeout 8000"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "swagger-ui-express": "^5.0.0",
+    "graphql": "^15.8.0",
+    "express-graphql": "^0.12.0"
+  },
+  "devDependencies": {
+    "chai": "^4.4.1",
+    "mocha": "^10.6.0",
+    "sinon": "^17.0.1",
+    "supertest": "^7.0.0"
+  }
+}

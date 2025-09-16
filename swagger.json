@@ -1,0 +1,54 @@
+
+{
+  "openapi": "3.0.0",
+  "info": { "title": "API de Compras de Livros", "version": "1.0.0" },
+  "paths": {
+    "/api/auth/register": {
+      "post": {
+        "summary": "Registrar usuário",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": {
+          "type":"object","properties":{"username":{"type":"string"},"password":{"type":"string"}},"required":["username","password"]
+        }}}},
+        "responses": { "201":{"description":"Criado"},"400":{"description":"Erro de validação"} }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "summary": "Login",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": {
+          "type":"object","properties":{"username":{"type":"string"},"password":{"type":"string"}},"required":["username","password"]
+        }}}},
+        "responses": { "200":{"description":"OK"},"400":{"description":"Credenciais inválidas"} }
+      }
+    },
+    "/api/users": {
+      "get": {
+        "summary": "Listar usuários",
+        "security":[{"bearerAuth":[]}],
+        "responses": { "200":{"description":"OK"},"401":{"description":"Token inválido"} }
+      }
+    },
+    "/api/comprar": {
+      "post": {
+        "summary": "Comprar livro",
+        "security":[{"bearerAuth":[]}],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": {
+          "type":"object","properties":{"title":{"type":"string"}},"required":["title"]
+        }}}},
+        "responses": { "201":{"description":"Compra realizada"},"400":{"description":"Regra de negócio"},"401":{"description":"Sem token"} }
+      }
+    },
+    "/api/compras": {
+      "get": {
+        "summary": "Listar compras do usuário",
+        "security":[{"bearerAuth":[]}],
+        "responses": { "200":{"description":"OK"},"401":{"description":"Sem token"} }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": { "type":"http","scheme":"bearer","bearerFormat":"JWT" }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+node_modules
+.env
+coverage
+mochawesome-report
+test-api.ps1
+Fluxo - Passo a Passo.txt
