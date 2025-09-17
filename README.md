@@ -8,8 +8,8 @@ O objetivo é servir de base para estudos de testes automatizados e automação 
 ## Tecnologias
 - Node.js  
 - Express  
-- Swagger (documentação)  
-- GraphQL (Apollo Server)  
+- GraphQL (express-graphql)
+- Mocha + Chai + Sinon + Supertest (testes automatizados)
 - JWT (autenticação)  
 - Banco de dados em memória (arrays em variáveis)  
 
@@ -45,11 +45,13 @@ BASE_URL_GRAPHQL=http://localhost:4000/graphql
 
 Para iniciar o servidor REST + GraphQL:
 ```bash
+# Rodar em dois terminais separados ou com "&"
 npm run start-rest
+npm run start-graphql
+
 ```
 
 - **API REST:** [http://localhost:3000](http://localhost:3000)  
-- **Swagger:** [http://localhost:3000/api-docs](http://localhost:3000/api-docs)  
 - **GraphQL:** [http://localhost:4000/graphql](http://localhost:4000/graphql)  
 
 ---
@@ -57,30 +59,30 @@ npm run start-rest
 ## Endpoints principais
 
 ### Registro de usuário
-`POST /users/register`  
+`POST /api/auth/register`  
 Body:
 ```json
 { "username": "string", "password": "string" }
 ```
 
 ### Login
-`POST /users/login`  
+`POST /api/auth/login`  
 Body:
 ```json
 { "username": "string", "password": "string" }
 ```
 
 ### Listar usuários
-`GET /users` (requer JWT)
+`GET /api/users` (requer JWT)
 
 ### Compras de livros
 `POST /comprar` (JWT obrigatório)  
 Body:
 ```json
-{ "from": "string", "to": "string", "value": number }
+{ "titulo": "Bíblia Sagrada"}
 ```
 
-`GET /comprar` (JWT obrigatório)
+`GET /api/minhas-compras` (JWT obrigatório)
 
 ---
 
@@ -95,7 +97,7 @@ Acesse [http://localhost:4000/graphql](http://localhost:4000/graphql)
 
 **Types:**
 - User: id, username  
-- Compra: id, from, to, value, date  
+- Compra: id, titulo, status, date 
 
 **Queries:**
 - `users`: lista todos os usuários (JWT)  
@@ -104,7 +106,7 @@ Acesse [http://localhost:4000/graphql](http://localhost:4000/graphql)
 **Mutations:**
 - `register(username, password): User`  
 - `login(username, password): Auth { token }`  
-- `comprar(from, to, value): Compra (JWT)`  
+- `comprarLivro(input: CompraInput!): Compra (JWT)`  
 
 ---
 
@@ -119,15 +121,17 @@ Acesse [http://localhost:4000/graphql](http://localhost:4000/graphql)
 
 ## Testes
 
-O arquivo **app.js** pode ser importado em ferramentas como **Supertest**.  
-Para testar a API GraphQL, importe **graphql/app.js** nos testes.  
-
 **Testes implementados:**
-- Controller (Sinon)  
-- REST External (Supertest)  
-- GraphQL External (Supertest)  
+- Foram implementados testes automatizados em três níveis:
 
-Rodar todos os testes:
+- **Controller (unitários com Sinon):** validam as regras de negócio dos controllers.  
+- **REST External (Supertest):** simulam chamadas HTTP reais na API REST.  
+- **GraphQL External (Supertest):** simulam chamadas HTTP reais na API GraphQL.  
+
+### Como rodar os testes
 ```bash
 npm test
+npm run test-rest-controller
+npm run test-rest-external
+npm run test-graphql-external
 ```
