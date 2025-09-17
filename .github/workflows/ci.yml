@@ -1,5 +1,4 @@
-
-name: Entrega final - API de Compras de Livros
+name: Node.js CI
 
 on:
   push:
@@ -23,23 +22,26 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Run controller tests
+    - name:  Rodar os testes de API via Controller
       run: npm run test-rest-controller
 
-    - name: Start REST
+    - name: Subir a API Rest 
       run: npm run start-rest &
 
-    - name: Start GraphQL
+    - name: Subir a API GraphQL 
       run: npm run start-graphql &
 
-    - name: Wait services
+    - name: Esperar as APIs estarem Funcionando
       run: sleep 8
 
-    - name: Create .env
+    - name: Criar .env
       run: |
         echo "BASE_URL_REST=${{ secrets.BASE_URL_REST }}" >> .env
         echo "BASE_URL_GRAPHQL=${{ secrets.BASE_URL_GRAPHQL }}" >> .env
         echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
 
-    - name: Run REST external tests
+    - name: Rodar os testes External de API Rest via HTTP
       run: npm run test-rest-external
+
+    - name: Rodar os testes External de API GraphQL via HTTP
+      run: npm run test-graphql-external

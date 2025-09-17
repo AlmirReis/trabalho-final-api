@@ -1,19 +1,30 @@
+// importa o módulo inteiro (assim os stubs do Sinon funcionam nos testes)
+const bookService = require('../service/bookService');
 
-const { comprarLivroService, listarComprasService } = require('../service/bookService');
-
-function comprarLivro(req,res){
-  try{
-    const compra = comprarLivroService(req.user.id, req.body);
+function comprarLivro(req, res) {
+  try {
+    const compra = bookService.comprarLivroService(req.user.id, req.body);
     return res.status(201).json(compra);
-  }catch(e){
-    const known=['missing_fields','invalid_value','Livro não encontrado','Livro sem estoque disponível'];
-    if (known.includes(e.message)) return res.status(400).json({error:e.message});
-    return res.status(500).json({error:'internal'});
+  } catch (e) {
+    // erros de negócio conhecidos
+    const known = [
+      'missing_fields',
+      'Livro não encontrado',
+      'Livro sem estoque disponível'
+    ];
+
+    if (known.includes(e.message)) {
+      return res.status(400).json({ error: e.message });
+    }
+
+    // qualquer outro erro inesperado
+    return res.status(500).json({ error: 'internal' });
   }
 }
 
-function listarCompras(req,res){
-  return res.json(listarComprasService(req.user.id));
+function listarCompras(req, res) {
+  const compras = bookService.listarComprasService(req.user.id);
+  return res.json(compras);
 }
 
 module.exports = { comprarLivro, listarCompras };
