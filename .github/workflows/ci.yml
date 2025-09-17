@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Projeto final API de Compras de Livros
 
 on:
   push:
